@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login authentication</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container my-2 p-3">
+        <div class="row mt-5">
+            <div class="col-lg-8">
+                <form class="needs-validation" novalidate>
+                    <div class="row mb-4">
+                        <label for="validationUsername" class="form-label col-lg-2">Username</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="validationUsername" name="validationUsername" aria-describedby="EmptyUsername" required>
+                            <div class="invalid-feedback" id="EmptyUsername"></div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <label for="validationEmail" class="form-label col-lg-2">E-mail</label>
+                        <div class="col-lg-10">
+                            <input type="email" class="form-control" id="validationEmail" name="validationEmail" aria-describedby="EmptyEmail" required>
+                            <div class="invalid-feedback" id="EmptyEmail">Enter your E-mail.</div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <label for="validationPassword" class="form-label col-lg-2">Password</label>
+                        <div class="col-lg-10">
+                            <input type="password" class="form-control" id="validationPassword" name="validationPassword" aria-describedby="EmptyPassword" required>
+                            <div class="invalid-feedback" id="EmptyPassword">Please enter letters, numbers, and special characters.</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-lg-2 col-lg-10">
+                            <button class="btn btn-primary d-block w-100" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form> 
+            </div><!--col end-->
+        </div><!--row end-->
+    </div><!--container end-->
+
+    <script src="/js/bootstrap.bundle.min.js">
+    </script>
+    <script>
+        (function () {
+            'use strict';
+            var myUsername = document.querySelector('#validationUsername');
+            var myEmail = document.querySelector('#validationEmail');
+            var myPassword = document.querySelector('#validationPassword');
+            const spacePattern = /^\S*$/;
+
+            myUsername.addEventListener('blur', controlUsername);
+            myEmail.addEventListener('blur', controlEmail);
+            myPassword.addEventListener('blur', controlPassword);
+
+            function controlUsername() {
+            var myError = document.querySelector('#EmptyUsername');
+            if(myUsername.value.length == 0) {
+                myUsername.classList.remove('is-valid');
+                myUsername.classList.add('is-invalid');
+                myError.innerHTML = "You can't leave it blank.";
+                return false;
+            }
+            else if(!spacePattern.test(myUsername.value)) {
+                myUsername.classList.remove('is-valid');
+                myUsername.classList.add('is-invalid');
+                myError.innerHTML = 'You cannot use spaces in your username.';
+                return false;
+            }
+            else if(myUsername.value.length < 4) {
+                myUsername.classList.remove('is-valid');
+                myUsername.classList.add('is-invalid');
+                myError.innerHTML = 'Minimum username length is 4 characters.';
+                return false;
+            }
+            else {
+                myUsername.classList.add('is-valid');
+                myUsername.classList.remove('is-invalid');
+                myError.innerHTML = '';
+                return true;
+            }
+            }
+            function controlEmail() {
+                const myEmailPattern=/^([a-zA-Z0-9_\-?\.?]){3,}@([a-zA-Z]){3,}\.([a-zA-Z]){2,5}$/;
+                if(spacePattern.test(myEmail.value) && myEmailPattern.test(myEmail.value)) {
+                    myEmail.classList.remove('is-invalid');
+                    myEmail.classList.add('is-valid');
+                    return true;
+                }
+                else {
+                    myEmail.classList.add('is-invalid');
+                    myEmail.classList.remove('is-valid');
+                    return false;
+                }
+            }
+            function controlPassword() {
+                const PassPattern=/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})(?=.*[!@#$%^&*])/;
+                if(spacePattern.test(myPassword.value) && PassPattern.test(myPassword.value)) {
+                    myPassword.classList.remove('is-invalid');
+                    myPassword.classList.add('is-valid');
+                    return true;
+                }
+                else {
+                    myPassword.classList.add('is-invalid');
+                    myPassword.classList.remove('is-valid');
+                    return false;
+                }
+            }
+            var myForms = document.querySelector('.needs-validation');
+            myForms.addEventListener('submit', function (e) {
+                if (!myForms.checkValidity() ||
+                        !controlUsername() ||
+                        !controlEmail() ||
+                        !controlPassword()
+                    ) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, false);
+        })()
+    </script>
+</body>
+</html>
